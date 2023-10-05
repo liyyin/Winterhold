@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Author')}">
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <form method="get" class="filter" th:attr="action=@{/author/index}">
+        <input type="text" th:value="${dto.searchName}" placeholder="Name" name="searchName">
+        <button type="submit" class="blue-button">Search</button>
+    </form>
+    <div class="container-btn-add">
+        <a class="btn btn-add" th:href="@{/author/insert}">Add New Author</a>
+    </div>
+    <div class="grid-container">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>full Name</th>
+                <th>Age</th>
+                <th>Status</th>
+                <th>Education</th>
+            </tr>
+            </thead>
+            <tbody th:each="au : ${dto.listData}" th:object="${au}">
+            <tr>
+                <td>
+                    <a class="btn btn-update" th:href="@{/author/update(id = *{id})}">Edit</a>
+                    <a class="btn btn-delete" th:attr="data-id=*{id}">Delete</a>
+                    <a class="btn btn-info" th:href="@{/author/detail(id = *{id})}" >Books</a>
+                </td>
+                <td th:text="*{fullName}"></td>
+                <td th:text="*{age}"></td>
+                <td th:text="*{deceasedDate == null}? 'Alive' : 'Deceased'"></td>
+                <td th:text="*{education}"></td>
+            </tr>
+            </tbody>
+            <tfoot th:if="${dto.totalPage >= 1}">
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${dto.currentPage} of ${dto.totalPage}|">
+
+                        </div>
+                        <div>
+                            <a th:each="loop:${#numbers.sequence(1, dto.totalPage)}"
+                               th:href="@{/author/index(page = ${loop},searchName = ${dto.searchName})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="modal-layer">
+        <div th:replace="~{layout::modalPopupConfirmation}"></div>
+    </div>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+<script th:src="@{/resources/js/author/popupModalAuthor.js}" defer></script>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

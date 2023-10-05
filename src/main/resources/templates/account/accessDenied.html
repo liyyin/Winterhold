@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head (Login)}"></head>
+<body class="authentication-body">
+<div class="authentication-wrapper">
+    <header class="company-logo">
+        <h1>
+            Trade of <span class="bold">basilisk</span>
+        </h1>
+    </header>
+
+    <main>
+        <h1>Sign in</h1>
+        <p>Your role not authorize</p>
+        <div>
+            <a th:href="@{/home/index}">Back to Landing Page</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>

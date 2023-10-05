@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Author')}">
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <form method="get" class="filter" th:attr="action=@{/category/index}">
+        <input type="text" th:value="${dto.searchName}" placeholder="Name" name="searchName">
+        <button type="submit" class="blue-button">Search</button>
+    </form>
+    <div class="container-btn-add">
+        <a class="btn btn-add" th:href="@{/category/insert}">Add New Category</a>
+    </div>
+    <div class="grid-container">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Category</th>
+                <th>Floor</th>
+                <th>Isle</th>
+                <th>Bay</th>
+                <th>Total books</th>
+            </tr>
+            </thead>
+            <tbody th:each="cat : ${dto.listData}" th:object="${cat}">
+            <tr>
+                <td>
+                    <a class="btn btn-update" th:href="@{/category/update(name = *{name})}">Edit</a>
+                    <a class="btn btn-delete" th:attr="data-categoryname=*{name}">Delete</a>
+                    <a class="btn btn-info" th:href="@{/book/index(categoryName = *{name})}" >Books</a>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{floor}"></td>
+                <td th:text="*{isle}"></td>
+                <td th:text="*{bay}"></td>
+                <td th:text="*{totalBooks}"></td>
+            </tr>
+            </tbody>
+            <tfoot th:if="${dto.totalPage >= 1}">
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${dto.currentPage} of ${dto.totalPage}|">
+
+                        </div>
+                        <div>
+                            <a th:each="loop:${#numbers.sequence(1, dto.totalPage)}"
+                               th:href="@{/category/index(page = ${loop},searchName = ${dto.searchName})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="modal-layer">
+        <div class="popup-dialog upsert-dialog">
+            <header>
+                <h1>Upsert Category</h1>
+                <a href="javascript:;" class="close-button">
+
+                </a>
+            </header>
+
+            <form class="upsert-form" th:attr="action=@{'/category/save'}">
+                <input class="action" hidden>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td><label>Category Name</label></td>
+                        <td><input class="categoryName" placeholder="Category name" type="text"></td>
+                        <td><div class="field-validation-error error-categoryName"></div></td>
+                    </tr>
+                    <tr>
+                        <td><label>Floor</label></td>
+                        <td><input class="floor" placeholder="floor" type="text"></td>
+                        <td><div class="field-validation-error error-floor"></div></td>
+                    </tr>
+                    <tr>
+                        <td><label>Isle</label></td>
+                        <td><input class="isle" placeholder="isle" type="text"></td>
+                        <td><div class="field-validation-error error-isle"></div></td>
+                    </tr>
+                    <tr>
+                        <td><label>Bay</label></td>
+                        <td><input class="bay" placeholder="bay" type="text"></td>
+                        <td><div class="field-validation-error error-bay"></div></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn blue-button" type="submit">Save</button>
+                <a class="btn btn-cancel close-button btn-back">Cancel</a>
+            </form>
+        </div>
+        <div th:replace="~{layout::modalPopupConfirmation}"></div>
+    </div>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+<script th:src="@{/resources/js/category/popupModalCategory.js}" defer></script>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

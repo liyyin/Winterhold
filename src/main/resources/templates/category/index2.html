@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Author')}">
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <form method="get" class="filter" th:attr="action=@{/category/index}">
+        <input type="text" th:value="${dto.searchName}" placeholder="Name" name="searchName">
+        <button type="submit" class="blue-button">Search</button>
+    </form>
+    <div class="grid-container">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Category</th>
+                <th>Floor</th>
+                <th>Isle</th>
+                <th>Bay</th>
+                <th>Total books</th>
+            </tr>
+            </thead>
+            <tbody th:each="cat : ${dto.listData}" th:object="${cat}">
+            <tr>
+                <td>
+                    <a class="btn btn-update" th:href="@{/category/update(name = *{name})}">Edit</a>
+                    <a class="btn btn-delete" th:attr="data-categoryname=*{name}">Delete</a>
+                    <a class="btn btn-info" th:href="@{/book/index(categoryName = *{name})}" >Books</a>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{floor}"></td>
+                <td th:text="*{isle}"></td>
+                <td th:text="*{bay}"></td>
+                <td th:text="*{totalBooks}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+<script th:src="@{/resources/js/category/popupModalCategory.js}" defer></script>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Author')}">
+    <!--    <meta charset="UTF-8">-->
+    <!--    <title>Title</title>-->
+    <!--    <link src="style.css">-->
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <form class="upsert-form" method="POST" th:attr="action=@{ ${dto.code == null}? '/book/save' : '/book/update'}" th:object="${dto}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <table>
+            <tbody>
+            <tr>
+                <td><label>Code</label></td>
+                <td>
+                    <input th:if="${action.equals('insert')}" type="text" placeholder="Code" th:field="*{code}">
+                    <input th:if="${action.equals('update')}"type="text" placeholder="Code" th:field="*{code}" readonly>
+                    <div class="field-validation-error" th:errors="*{code}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Title</label></td>
+                <td>
+                    <input  type="text" placeholder="title" th:field="*{title}">
+                    <div class="field-validation-error" th:errors="*{title}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Category</label></td>
+                <td>
+                    <div  th:if="*{categoryName == null}">
+                        <label  th:text="${categoryName}" ></label>
+                        <input type="hidden" name="categoryName" th:value="${categoryName}">
+                    </div>
+                    <div  th:if="*{categoryName != null}">
+                        <label  th:text="*{categoryName}" ></label>
+                        <input type="hidden" name="categoryName" th:value="*{categoryName}">
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Author</label></td>
+                <td>
+                    <select th:field="*{author}">
+                        <option th:value="null">~SELECT AUTHOR~</option>
+                        <option th:each="data:${dropDownAuthor}" th:value="${data.integerValue}" th:text="${data.text}" th:selected="${data.integerValue == author}"></option>
+                    </select>
+                    <div class="field-validation-error" th:errors="*{author}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Release Date</label></td>
+                <td>
+                    <input type="date" th:field="*{releaseDate}">
+                    <div class="field-validation-error" th:errors="*{releaseDate}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Total Page</label></td>
+                <td>
+                    <input type="number" placeholder="Total Page" th:field="*{totalPage}">
+                    <div class="field-validation-error" th:errors="*{totalPage}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Summary</label></td>
+                <td>
+                    <textarea placeholder="Summary" th:field="*{summary}"></textarea>
+                    <div class="field-validation-error" th:errors="*{summary}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn blue-button">Submit</button>
+        <a th:if="${dto.categoryName == null}" class="btn btn-back" th:href="@{/book/index(categoryName = ${categoryName})}">Back To index</a>
+        <a th:if="${dto.categoryName != null}" class="btn btn-back" th:href="@{/book/index(categoryName = ${dto.categoryName})}">Back To index</a>
+    </form>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

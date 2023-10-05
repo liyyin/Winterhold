@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head (Login)}"></head>
+<body class="authentication-body">
+<div class="authentication-wrapper">
+    <header class="company-logo">
+        <h1>
+            Trade of <span class="bold">basilisk</span>
+        </h1>
+    </header>
+
+    <main>
+        <h1>Sign in</h1>
+        <form method="post" th:attr="action=@{/loginPost}">
+            <div th:if="${param.error != null}" th:text="${param.error}" class="field-validation-error"></div>
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden">
+            <input name="username" placeholder="Username" type="text">
+            <input name="password" placeholder="Password" type="password">
+            <button type="submit">Login</button>
+        </form>
+    </main>
+</div>
+</body>
+</html>

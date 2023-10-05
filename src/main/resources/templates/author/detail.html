@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Detail')}">
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+
+<main>
+    <a class="blue-button" th:href="@{/author/index}">BACK</a>
+    <table>
+        <tbody>
+        <tr>
+            <td><label>Name</label></td>
+            <td>
+                <input type = "text" th:field ="${dto.fullName}" disabled>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Birth Date</label></td>
+            <td>
+                <input type = "text" th:field ="${dto.birthDate}"disabled>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Deceased Date</label></td>
+            <td>
+                <input type = "text" th:field ="${dto.stringDeceasedDate}"disabled>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Education</label></td>
+            <td>
+                <input type = "text" th:field ="${dto.education}">
+            </td>
+        </tr>
+        <tr>
+            <td><label>Summary</label></td>
+            <td>
+                <textarea th:field ="${dto.summary}"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="grid-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Category</th>
+                <th>Is Borrowed</th>
+                <th>Release Date</th>
+                <th>Total Page</th>
+            </tr>
+            </thead>
+            <tbody th:each="bo : ${listDto}" th:object="${bo}">
+            <tr>
+                <td th:text="*{bookTitle}"></td>
+                <td th:text="*{categoryName}"></td>
+                <td th:text="*{isBorrowed}? 'Borrowed':'Available'"></td>
+                <td th:text="*{releaseDate}"></td>
+                <td th:text="*{totalPage}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}">
+</th:block>
+<script th:src="@{/resources/js/addDelRegion.js}" defer></script>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

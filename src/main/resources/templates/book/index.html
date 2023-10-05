@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Book')}">
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <div class="container-btn">
+        <a class="btn blue-button" th:href="@{/category/index}">Back To Category</a>
+    </div>
+    <form method="get" class="filter" th:attr="action=@{/book/index}">
+        <input th:value="${dto.categoryName}" name="categoryName" hidden>
+        <div>
+            <label>Name</label>
+            <input type="text" th:value="${dto.searchName}" placeholder="Book Name" name="bookName">
+        </div>
+        <div>
+            <label>Number</label>
+            <input type="text" th:value="${dto.searchOther}" placeholder="Author Name" name="author">
+        </div>
+        <div>
+            <input type="checkbox" name="isAvail"><label>isAvail</label>
+        </div>
+        <div>
+            <button type="submit" class="blue-button">Search</button>
+        </div>
+    </form>
+    <div class="container-btn-add">
+        <a class="btn btn-add" th:href="@{/book/insert(categoryName = ${dto.categoryName})}">Add <span th:text="${dto.categoryName}"></span> Book</a>
+    </div>
+    <div class="grid-container">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Is Borrowed</th>
+                <th>Release Date</th>
+                <th>Total Page</th>
+            </tr>
+            </thead>
+            <tbody th:each="cus : ${dto.listData}" th:object="${cus}">
+            <tr>
+                <td th:if="*{!summary.equals('')}">
+                    <a class="btn btn-info btn-summary" th:attr="data-bookCode=*{bookCode}" >Summary</a>
+                    <a class="btn btn-update" th:href="@{/book/update(bookCode = *{bookCode})}">Edit</a>
+                    <a class="btn btn-delete" th:attr="data-bookCode=*{bookCode}">Delete</a>
+                </td>
+                <td th:if="*{summary.equals('')}">
+                    <a class="btn btn-update" th:href="@{/book/update(bookCode = *{bookCode})}">Edit</a>
+                    <a class="btn btn-delete" th:attr="data-bookCode=*{bookCode}">Delete</a>
+                </td>
+                <td th:text="*{bookTitle}"></td>
+                <td th:text="*{authorName}"></td>
+                <td th:text="*{isBorrowed}? 'Borrowed':'Available'"></td>
+                <td th:text="*{releaseDate}"></td>
+                <td th:text="*{totalPage}"></td>
+            </tr>
+            </tbody>
+            <tfoot th:if="${dto.totalPage >= 1}">
+            <tr>
+                <td colspan="4">
+                    <div class="pagination">
+                        <div th:text="|page ${dto.currentPage} of ${dto.totalPage}|">
+
+                        </div>
+                        <div>
+                            <a th:each="loop:${#numbers.sequence(1, dto.totalPage)}"
+                               th:href="@{/customer/index(page = ${loop},searchNumber = ${dto.searchOther},searchName = ${dto.searchName} ,expired = ${dto.isTrue})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="modal-layer">
+        <div class="popup-dialog summary-dialog">
+            <p class="summary"></p>
+            <a class="btn btn-cancel close-button btn-back">Cancel</a>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+<script th:src="@{/resources/js/book/scriptBook.js}" defer></script>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

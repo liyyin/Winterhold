@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Author')}">
+    <!--    <meta charset="UTF-8">-->
+    <!--    <title>Title</title>-->
+    <!--    <link src="style.css">-->
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <form class="upsert-form" method="POST" th:attr="action=@{ ${action.equals('insert')}? '/customer/save' : '/customer/update'}" th:object="${dto}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <table>
+            <tbody>
+            <tr>
+                <td><label>Membership Number</label></td>
+                <td>
+                    <input th:if="${action.equals('insert')}" type="text"  placeholder="Membership Number" th:field="*{membershipNumber}">
+                    <input th:if="${action.equals('update')}" type="text"  placeholder="Membership Number" th:field="*{membershipNumber}" readonly>
+                    <div class="field-validation-error" th:errors="*{membershipNumber}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>First Name</label></td>
+                <td>
+                    <input type="text" placeholder="first Name" th:field="*{firstName}">
+                    <div class="field-validation-error" th:errors="*{firstName}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Last Name</label></td>
+                <td>
+                    <input type="text" placeholder="Last Name" th:field="*{lastName}">
+                    <div class="field-validation-error" th:errors="*{lastName}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>BirthDate</label></td>
+                <td>
+                    <input type="date" th:field="*{birthDate}">
+                    <div class="field-validation-error" th:errors="*{birthDate}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Gender</label></td>
+                <td>
+                    <input type="radio" th:value="'Male'" th:field="*{gender}"><label>Male</label>
+                    <input type="radio" th:value="'Female'" th:field="*{gender}"><label>female</label>
+                    <div class="field-validation-error" th:errors="*{gender}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Phone</label></td>
+                <td>
+                    <input type="text" placeholder="Phone" th:field="*{phone}">
+                    <div class="field-validation-error" th:errors="*{phone}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Address</label></td>
+                <td>
+                    <textarea placeholder="address" th:field="*{address}"></textarea>
+                    <div class="field-validation-error" th:errors="*{address}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn blue-button">Submit</button>
+        <a class="btn btn-back" th:href="@{/customer/index}">Back To index</a>
+    </form>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>

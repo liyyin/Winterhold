@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymmleaf.org">
+<head th:replace="~{layout::head('Customer')}">
+</head>
+<body class="main-body">
+<nav th:replace="~{layout::navigation}"></nav>
+<main>
+    <form method="get" class="filter" th:attr="action=@{/customer/index}">
+        <div>
+            <label>Name</label>
+            <input type="text" th:value="${dto.searchName}" placeholder="Name" name="searchName">
+        </div>
+        <div>
+            <label>Number</label>
+            <input type="text" th:value="${dto.searchOther}" placeholder="Number" name="searchNumber">
+        </div>
+        <div>
+            <input type="checkbox" name="expired"><label>Membership Already Expired</label>
+        </div>
+        <div>
+            <button type="submit" class="blue-button">Search</button>
+        </div>
+    </form>
+    <div class="container-btn-add">
+        <a class="btn btn-add" th:href="@{/customer/insert}">Add New Customer</a>
+    </div>
+    <div class="grid-container">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Membership Number</th>
+                <th>Full Name</th>
+                <th>Expire Date</th>
+            </tr>
+            </thead>
+            <tbody th:each="cus : ${dto.listData}" th:object="${cus}">
+            <tr>
+                <td>
+                    <a class="btn btn-update" th:href="@{/customer/update(membershipNumber = *{memberShip})}">Edit</a>
+                    <a class="btn btn-delete" th:attr="data-membershipnumber=*{memberShip}" >Delete</a>
+                    <a class="btn btn-info btn-extend" th:attr="data-membershipnumber=*{memberShip}" >Extend</a>
+                </td>
+                <td class="membershipBox" th:text="*{memberShip}" th:attr="data-membershipnumber=*{memberShip}" ></td>
+                <td th:text="*{fullName}"></td>
+                <td th:text="*{expireDate}"></td>
+            </tr>
+            </tbody>
+            <tfoot th:if="${dto.totalPage >= 1}">
+            <tr>
+                <td colspan="4">
+                    <div class="pagination">
+                        <div th:text="|page ${dto.currentPage} of ${dto.totalPage}|">
+
+                        </div>
+                        <div>
+                            <a th:each="loop:${#numbers.sequence(1, dto.totalPage)}"
+                               th:href="@{/customer/index(page = ${loop},searchNumber = ${dto.searchOther},searchName = ${dto.searchName} ,expired = ${dto.isTrue})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="modal-layer">
+        <div th:replace="~{layout::modalPopupConfirmation}"></div>
+        <div class="popup-dialog detail-dialog">
+            <table>
+                <tbody>
+                <tr>
+                    <td><label>Membership Number</label></td>
+                    <td><span class="membershipSpan"></span></td>
+                </tr>
+                <tr>
+                    <td><label>Full Name</label></td>
+                    <td><span class="fullName"></span></td>
+                </tr>
+                <tr>
+                    <td><label>Birth Date</label></td>
+                    <td><span class="birthDate"></span></td>
+                </tr>
+                <tr>
+                    <td><label>Gender</label></td>
+                    <td><span class="gender"></span></td>
+                </tr>
+                <tr>
+                    <td><label>Phone</label></td>
+                    <td><span class="phone"></span></td>
+                </tr>
+                <tr>
+                    <td><label>Bay</label></td>
+                    <td><span class="address"></span></td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-cancel close-button btn-back">Close</a>
+        </div>
+    </div>
+    </div>
+</main>
+<footer th:replace="~{layout::footer}"></footer>
+<th:block th:replace="~{layout::javascript}"></th:block>
+<script th:src="@{/resources/js/customer/popupModalCustomer.js}" defer></script>
+<!--    untuk th:block di bacanya seperti script    -->
+</body>
+</html>
